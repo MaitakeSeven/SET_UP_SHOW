@@ -14,7 +14,12 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   def new
+    if @current_user == nil
     @post = Post.new
+    @post.build_tag
+    else
+     redirect_to login_path
+    end
   end
 
   # GET /posts/1/edit
@@ -29,7 +34,11 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.save
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
+        format.json { render :show, status: :created, location: @post } 
+                    #タグとPOSTの関連付け
+        @new_post = Post.find_by(title: @post[:title])
+        @new_tag = Tag.find_by(name: @post.tag[:name])
+        @new_post.post_tag.find_or_create_by(tag_id: @new_tag.id)
       else
         format.html { render :new }
         format.json { render json: @post.errors, status: :unprocessable_entity }
@@ -69,6 +78,8 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:image,:title,:comment)
+      params.require(:post).permit(:image,:title,:comment,tag_attributes:[:name])
     end
+    
+
 end
