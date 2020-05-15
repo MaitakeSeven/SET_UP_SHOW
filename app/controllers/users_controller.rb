@@ -10,12 +10,13 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       #flash.now[:danger] = 'ユーザの登録に失敗しました。'
-      render :new
+      render login_path
     end
   end
 
   def show
     @user = User.find(params[:id])
+    @posts = @user.posts
   end
   
 private

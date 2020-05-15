@@ -1,6 +1,5 @@
 module PostsHelper
-    def get_tags(other_posts)
-        @tag = other_posts.tag
+    def add_tag(other_post)
 
-    end
+    end 
 end

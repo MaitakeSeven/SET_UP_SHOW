@@ -1,0 +1,28 @@
+<h1>"<%= @tag.name %>"タグを含む投稿一覧</h1>
+<div class="row">
+    <% @posts.each do |post| %>
+      <div class="card" style="width: 22rem;" id="card">
+        <img class="card-img-top" alt="Card image cap"<%= image_tag post.image.url %>
+            <div class="card-header">
+              <h5 class="card-title" id="card-post">
+                <%= link_to post.title, post %>
+              </h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text" id="card-post">
+                <div>投稿者:<%= User.find(post.user_id).name %></div>
+                <%= post.comment %>
+              </p>
+            </div>
+          <% #タグの数だけループさせる %>
+          <div class="card-footer " id="card-post">
+            <% post.tags.each do |tag| %>
+                  <%= link_to tag.name,find_tag_path(tag) ,class: "btn btn-primary"%>
+            <% end %>
+          </div>
+
+
+        </div>  
+    <% end %>
+    </div>
+</div>

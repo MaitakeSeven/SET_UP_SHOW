@@ -1,10 +1,16 @@
 class Post < ApplicationRecord
-    mount_uploader :image, ImageUploader
-    has_many :user
-    has_many :post_tag
-    has_many :tag ,through: :post_tag, source: :tag_id
-    belongs_to :tag,foreign_key: "id"
-    accepts_nested_attributes_for :tag
-    
+  
+      validates :image, presence: true
+      validates :title, presence: true, length: { maximum:10 }
+      validates :comment, presence: true, length: { maximum:50 }
+      
+      mount_uploader :image, ImageUploader
+      
+      belongs_to :user
+      
+      has_many :post_tags,dependent: :destroy
+      has_many :tags, through: :post_tags, source: :tag
+      
+      has_many :favorites,dependent: :destroy
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_02_015706) do
+ActiveRecord::Schema.define(version: 2020_05_05_120201) do
 
   create_table "favorites", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -38,6 +38,10 @@ ActiveRecord::Schema.define(version: 2020_05_02_015706) do
     t.string "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id_id"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
+    t.index ["user_id_id"], name: "index_posts_on_user_id_id"
   end
 
   create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -58,4 +62,5 @@ ActiveRecord::Schema.define(version: 2020_05_02_015706) do
   add_foreign_key "favorites", "users"
   add_foreign_key "post_tags", "posts"
   add_foreign_key "post_tags", "tags"
+  add_foreign_key "posts", "users"
 end
