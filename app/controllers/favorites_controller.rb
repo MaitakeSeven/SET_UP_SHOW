@@ -4,6 +4,7 @@ class FavoritesController < ApplicationController
     post = Post.find(params[:post_id])
     current_user.fav_in(post)
     flash[:success] = 'お気に入り登録しました。'
+    
             redirect_to root_path
     end
     
@@ -13,5 +14,21 @@ class FavoritesController < ApplicationController
     current_user.fav_out(post)
     flash[:success] = 'お気に入りを解除しました。'
             redirect_to root_path
+    end 
+    
+    def create_show
+    post = Post.find(params[:post_id])
+    current_user.fav_in(post)
+    flash[:success] = 'お気に入り登録しました。'
+    
+            redirect_to post
+    end
+    
+    
+    def destroy_show
+    post = Post.find(params[:post_id])
+    current_user.fav_out(post)
+    flash[:success] = 'お気に入りを解除しました。'
+            redirect_to post
     end 
 end

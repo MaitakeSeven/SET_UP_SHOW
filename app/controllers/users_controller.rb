@@ -6,10 +6,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      #flash[:success] = 'ユーザを登録しました。'
+      flash[:success] = 'ユーザを登録しました。'
       redirect_to @user
     else
-      #flash.now[:danger] = 'ユーザの登録に失敗しました。'
+      flash.now[:danger] = 'ユーザの登録に失敗しました。'
       render login_path
     end
   end
@@ -19,6 +19,10 @@ class UsersController < ApplicationController
     @posts = @user.posts
   end
   
+  def likes
+    @user = User.find(params[:id])
+    @posts = @user.favorite_now
+  end
 private
 
   def user_params

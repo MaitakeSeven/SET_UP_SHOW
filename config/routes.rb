@@ -13,8 +13,12 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   get 'signup', to: 'users#new'
+  
   post "favorites", to: "favorites#create"
   delete "favorites", to: "favorites#destroy"
+  
+  post "favorites_show", to: "favorites#create_show"
+  delete "favorites_show", to: "favorites#destroy_show"
   resources :tags , only:[:show] do
     member do
       get :find
@@ -23,7 +27,7 @@ Rails.application.routes.draw do
   resources :users, only:[:index, :show, :new, :create] do
     member do
       get :likes
-      get :favorite_now
+      get :favorites
     end
   end
   

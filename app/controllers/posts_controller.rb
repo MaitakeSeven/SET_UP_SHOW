@@ -112,8 +112,12 @@ class PostsController < ApplicationController
   end
 
   def tag_d
+      @post = Post.find(params[:id])
+      if @post.tags.count > 1
       @p_t = PostTag.find_by(post_id: params[:id],tag_id: params[:tag_id])
       @p_t.destroy
+      else
+      end
       redirect_to post_path(params[:id])
       
   end

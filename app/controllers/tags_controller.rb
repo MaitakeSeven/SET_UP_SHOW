@@ -15,7 +15,7 @@ def edit
 end
 
 def find
-@tag = Tag.find(tag_d_params)
+@tag = Tag.find(params[:id])
 @posts = @tag.posts
 end
 
@@ -31,6 +31,6 @@ end
     end 
     
     def tag_d_params
-      params.repuire(:format)
+      params.require(:format)
     end
 end

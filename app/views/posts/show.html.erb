@@ -4,15 +4,17 @@
         <div>
           <img id="show_post" <%= image_tag @post.image.url if @post.image? %>
         </div>
+        <% if current_user == @post.user.id  %>
           <% post = @post%>
           <%= link_to 'Edit', edit_post_path(@post) %>
           <%= link_to 'Back', posts_path %>
           <%= link_to 'Destroy', @post, method: :delete, data: { confirm: '本当に削除しますか?' } %>
+        <% end %>
     </div>
     <div class="col-sm-4">
           <div class="border border-primary" id="show_field">
             
-            投稿者:<%= User.find(@post.user_id).name %>
+            投稿者:<%= link_to User.find(@post.user_id).name,user_path(@post.user_id) %>
             <br>タイトル:<%= @post.title %>
           </div>
           
@@ -25,7 +27,7 @@
             <% @post.tags.each do |tag| %>
               <div id="tag-box">
                     <%= link_to tag.name,find_tag_path(tag) ,class: "btn btn-primary btn-sm",id:"tag-btn-s"%>
-                    <%= link_to 'X', tag_d_post_path(@post.id,tag_id: tag.id), method: :delete, data: { confirm: '本当に削除しますか?' },class: "btn btn-danger btn-sm",id:"tag-btn-d" %>
+                    <%= link_to '×', tag_d_post_path(@post.id,tag_id: tag.id), method: :delete, data: { confirm: '本当に削除しますか?' },class: "btn btn-danger btn-sm",id:"tag-btn-d" %>
               </div>
             <% end %>
         </div>
@@ -41,19 +43,19 @@
         </div>
           <% unless current_user == nil %>
             <div class="border border-primary" id="show_field">
-                    <% if current_user.fav_now(post) #お気に入り解除%>
-                        <%= form_with(model: current_user.favorites.find_by(post_id: post.id), local: true, method: :delete) do |f| %>
-                          <%= hidden_field_tag :post_id, post.id %>
-                            <%= link_to(favorites_path(post_id: post.id), method: :delete) do %>
-                              <i class="fas fa-star"></i>
-                            <% end %>
+                   <% if current_user.fav_now(@post) #お気に入り解除%>
+                        <%= form_with(model: current_user.favorites.find_by(post_id: @post.id), local: true, method: :delete) do |f| %>
+                          <% #hidden_field_tag :post_id, post.id %>
+                          <%= link_to(favorites_show_path(post_id: @post.id), method: :delete) do %>
+                            <i class="fas fa-star"></i>
+                          <% end %>
                         <% end %>
                     <% else#お気に入り %>
                         <%= form_with(model: current_user.favorites.build, local: true) do |f| %>
-                          <%= hidden_field_tag :post_id, post.id %>
-                              <%= link_to(favorites_path(post_id: post.id), method: :post) do %>
-                              <i class="far fa-star"></i>
-                              <% end %>
+                           <% #hidden_field_tag :post_id, post.id %>
+                            <%= link_to(favorites_show_path(post_id: @post.id), method: :post) do %>
+                            <i class="far fa-star"></i>
+                            <% end %>
                           <% end %>
                     <% end %>
             </div>
