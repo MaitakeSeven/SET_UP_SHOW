@@ -1,5 +1,5 @@
 class FavoritesController < ApplicationController
-    #before_action :require_user_logged_in
+    before_action :require_user_logged_in
     def create
     post = Post.find(params[:post_id])
     current_user.fav_in(post)

@@ -32,22 +32,22 @@
     </div></div>
         <div class="form-group row">
               <%= form.label :name1, 'タグ1：',class:"col-sm-2" %>
-          <div class="col-sm-10">
-                <%= text_field_tag :name1 %>
+          <div class="col-sm-2">
+                <%= text_field_tag :name1 ,"", class: 'form-control'%>
         </div></div>
           <div class="form-group row">
                 <%= form.label :name2, 'タグ2：',class:"col-sm-2" %>
-          <div class="col-sm-10">
-                  <%= text_field_tag :name2 %>
+          <div class="col-sm-2">
+                  <%= text_field_tag :name2 ,"", class: 'form-control'%>
           </div></div>
           
         <div class="form-group row">
             <%= form.label :name3, 'タグ3：',class:"col-sm-2" %>
-        <div class="col-sm-10">
-                <%= text_field_tag :name3 %>
+        <div class="col-sm-2">
+                <%= text_field_tag :name3 ,"", class: 'form-control'%>
         </div></div>
-    <div class="actions">
-      <%= form.submit %>
+    <div class="actions col-sm-2">
+      <%= form.submit "投稿",class:"btn btn-primary"%>
     </div>
 
   <% end %>

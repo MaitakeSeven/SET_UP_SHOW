@@ -3,7 +3,7 @@
 <h1>投稿一覧</h1>
 <div  class="border border-primary">
   <h5>
-    説明
+    利用方法
   </h5>
   <p>PCデスクの写真を投稿、シェア出来るWebアプリです。</p>
   <p>投稿はログイン後行う事が出来ます。</p>
@@ -11,5 +11,6 @@
 </div>
 <div class="row">
     <%= render 'posts/posts', posts: @posts %>
+    <%= paginate @posts %>
 </div>
 
