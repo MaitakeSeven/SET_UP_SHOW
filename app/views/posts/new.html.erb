@@ -1,5 +1,11 @@
 <h1>新規投稿</h1>
-
-<%= render 'form', post: @post, tag: @tag %>
+<div  class="border border-primary">
+  <h5>
+    投稿方法
+  </h5>
+  <p>タイトルは10文字以内で投稿して下さい。</p>
+  <p>タグは3つまで同時に追加できます。タグは投稿後に編集可能です。</p>
+</div>
+<%= render 'form', post: @post, name1: @name1, name2: @name2, name3: @name3%>
 
 <%= link_to 'Back', posts_path %>
