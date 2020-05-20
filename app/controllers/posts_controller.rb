@@ -39,45 +39,49 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @namearray = [tag1_params,tag2_params,tag3_params]
-    @name1 = tag1_params#エラー出た時用
+    
     @newarray = []
-      @namearray.each do |name|
-        unless name == nil
+    
+    @namearray.each do |name|
+      unless name == nil
           @tag = Tag.new(name: name)
           @newarray.push(@tag)
-        end
       end
+    end
+      
     respond_to do |format|
-      if  @post.save
-            format.html { redirect_to @post, notice: 'Post was successfully created.' }
-            format.json { render :show, status: :created, location: @post } 
+        if  @post.save
+            
+            #format.json { render :show, status: :created, location: @post } 
             flash[:success] = '投稿に成功しました。'
-        @newarray.each do |tag|
-            @check = Tag.find_by(name: tag.name)
-            @new_post = Post.find_by(title: @post.title)
-          unless @check
-              if tag.save
-                @new_tag = Tag.find_by(name: tag.name)
-                  @new_post.post_tags.find_or_create_by(tag_id: @new_tag.id)
+            
+            @newarray.each do |tag|
+              @check = Tag.find_by(name: tag.name)
+              @new_post = Post.find_by(title: @post.title)
+              unless @check
+                  if tag.save
+                    @new_tag = Tag.find_by(name: tag.name)
+                    @new_post.post_tags.find_or_create_by(tag_id: @new_tag.id)
+                  else
+                    
+                    redirect_to :new
+                  end
               else
-                redirect_to :new
+                @new_post.post_tags.find_or_create_by(tag_id: @check.id)
               end
-          else
-            @new_post.post_tags.find_or_create_by(tag_id: @check.id)
-          end
+            end
+            format.html { redirect_to @post }
+        else
+            @name1 =  tag1_params
+            @name2  = tag2_params
+            @name3  = tag3_params
+            puts @name1#確認用
+            puts @name2#確認用
+            puts @name3#確認用
+            format.html { render :new }
+            flash[:danger] = '投稿に失敗しました。'
+            #format.json { render json: @post.errors, status: :unprocessable_entity }
         end
-        
-      else
-        @name2  = tag2_params
-        @name3  = tag3_params
-        puts @name1
-        puts @name2
-        puts @name3
-        format.html { render :new }
-        flash[:danger] = '投稿に失敗しました。'
-        #format.json { render json: @post.errors, status: :unprocessable_entity }
-
-      end
     end
 
   end
@@ -88,11 +92,13 @@ class PostsController < ApplicationController
     if @post.user.id == current_user.id
       respond_to do |format|
         if @post.update(post_params)
+          flash[:success] = '投稿を更新しました。'
           format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-          format.json { render :show, status: :ok, location: @post }
+          #format.json { render :show, status: :ok, location: @post }
         else
+          flash[:danger] = '投稿に失敗しました。'
           format.html { render :edit }
-          format.json { render json: @post.errors, status: :unprocessable_entity }
+          #format.json { render json: @post.errors, status: :unprocessable_entity }
         end
       end
     else
@@ -106,8 +112,9 @@ class PostsController < ApplicationController
     if @post.user.id == current_user.id
     @post.destroy
       respond_to do |format|
-        format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
-        format.json { head :no_content }
+        format.html { redirect_to posts_url }
+        #format.json { head :no_content }
+        flash[:success] = '投稿を削除しました。'
       end
     else
       redirect_to root_path

@@ -1,5 +1,5 @@
+
 <%= form_with(model: post, local: true) do |form| %>
-  
     <%= form.hidden_field :user_id, value: current_user.id %>
     <div class="form-group row">
       <%= form.label :image,"画像:",class:"col-sm-2" %>
@@ -25,21 +25,21 @@
         <div class="form-group row">
                 <%= form.label :name1, 'タグ1：',class:"col-sm-2" %>
         <div class="col-sm-2">
-                  <%= text_field_tag :name1 ,@name1, class: 'form-control'%>
+                  <%= text_field_tag :name1 ,name1, class: 'form-control'%>
         </div>
         </div>
         
         <div class="form-group row">
                 <%= form.label :name2, 'タグ2：',class:"col-sm-2" %>
         <div class="col-sm-2">
-                  <%= text_field_tag :name2 ,@name2, class: 'form-control'%>
+                  <%= text_field_tag :name2 ,name2, class: 'form-control'%>
         </div>
         </div>
           
         <div class="form-group row">
             <%= form.label :name3, 'タグ3：',class:"col-sm-2" %>
         <div class="col-sm-2">
-                  <%= text_field_tag :name3 ,@name3, class: 'form-control'%>
+                  <%= text_field_tag :name3 ,name3, class: 'form-control'%>
         </div>
         </div>
         

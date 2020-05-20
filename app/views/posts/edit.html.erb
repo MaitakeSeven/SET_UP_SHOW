@@ -14,12 +14,7 @@
   <% end %>
   
     <%= form.hidden_field :user_id, value: current_user.id %>
-    <div class="form-group row">
-      <%= form.label :image,"画像:",class:"col-sm-2" %>
-    <div class="col-sm-10">
-        <%= form.file_field :image,class:"form-control-file"%>
-      </div>
-    </div>
+    
   
     <div class="form-group row">
             <%= form.label :title, 'タイトル：',class:"col-sm-2" %>
@@ -35,12 +30,11 @@
         </div>
     </div>
         
-    <div class="actions col-sm-2">
-      <%= form.submit "投稿",class:"btn btn-primary"%>
+    <div class="actions col-sm-4">
+      <%= form.submit "変更を確定",class:"btn btn-primary"%>
+      <%= link_to '戻る', posts_path,class:"btn btn-primary" %>
+<%= link_to '投稿を削除', @post, method: :delete, data: { confirm: '本当に削除しますか?' },class:"btn btn-danger" %>
     </div>
 
   <% end %>
 
-<%= link_to 'Show', @post %> |
-<%= link_to 'Back', posts_path %> |
-<%= link_to 'Destroy', @post, method: :delete, data: { confirm: '本当に削除しますか?' } %>
