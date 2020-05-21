@@ -44,7 +44,7 @@ class PostsController < ApplicationController
     @newarray = []
     
     @namearray.each do |name|
-      unless name == nil || name == "" #空文字＆nilを許さない
+      unless name == nil
           @tag = Tag.new(name: name)
           @newarray.push(@tag)
       end
@@ -121,18 +121,22 @@ class PostsController < ApplicationController
     @tag = Tag.new(tag_params)
     @check01 = Tag.where(name: @tag[:name])#配列
 
-    if @check01.length == 1
-      @post.post_tags.find_or_create_by(tag_id: @check01.first.id)
-    else
-      if@tag.save
-        @new_tag = Tag.find_by(name: @tag.name)
-        @post.post_tags.find_or_create_by(tag_id: @new_tag.id)
-        flash[:success] = 'タグの追加に成功しました。'
+      if @check01.length == 1
+        @post.post_tags.find_or_create_by(tag_id: @check01.first.id)
+        redirect_to post_path
       else
-        flash[:danger] = 'タグの追加に失敗しました。'
+        if@tag.save
+          @new_tag = Tag.find_by(name: @tag.name)
+          @post.post_tags.find_or_create_by(tag_id: @new_tag.id)
+          flash[:success] = 'タグの追加に成功しました。'
+          redirect_to post_path
+        else
+          flash[:danger] = 'タグの追加に失敗しました。'
+          redirect_to post_path
+        end
+
       end
-    end
-    redirect_to post_path
+
   end
 
   def tag_d
@@ -182,7 +186,9 @@ class PostsController < ApplicationController
     end
     
     def tag_params
-      params.require(:tag).permit(:name)
+      unless params[:name] == ""
+        params.require(:tag).permit(:name)
+      end
     end 
     
     def dtag_params
