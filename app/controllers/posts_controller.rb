@@ -49,6 +49,9 @@ class PostsController < ApplicationController
       end
     if @newarray.length == 0
       flash[:danger] = '投稿に失敗しました。'
+      @name1 =  tag1_params
+      @name2  = tag2_params
+      @name3  = tag3_params
       render :new
       return
     end
@@ -69,9 +72,8 @@ class PostsController < ApplicationController
         end
       flash[:success] = '投稿に成功しました。'
     end
-      
       redirect_to @post
-      
+
     rescue => e
       flash[:danger] = '投稿に失敗しました。'
       puts e.message
