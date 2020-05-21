@@ -34,6 +34,7 @@ class PostsController < ApplicationController
     end
   end
 
+
   # POST /posts
   # POST /posts.json
   def create
@@ -48,13 +49,10 @@ class PostsController < ApplicationController
           @newarray.push(@tag)
       end
     end
-      
     respond_to do |format|
         if  @post.save
-            
             #format.json { render :show, status: :created, location: @post } 
             flash[:success] = '投稿に成功しました。'
-            
             @newarray.each do |tag|
               @check = Tag.find_by(name: tag.name)
               @new_post = Post.find_by(title: @post.title)
@@ -83,8 +81,8 @@ class PostsController < ApplicationController
             #format.json { render json: @post.errors, status: :unprocessable_entity }
         end
     end
-
   end
+
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
