@@ -44,7 +44,7 @@ class PostsController < ApplicationController
     @newarray = []
     
     @namearray.each do |name|
-      unless name == nil && name == "" #空文字＆nilを許さない
+      unless name == nil || name == "" #空文字＆nilを許さない
           @tag = Tag.new(name: name)
           @newarray.push(@tag)
       end
