@@ -26,7 +26,9 @@
             <% @post.tags.each do |tag| %>
               <div id="tag-box">
                     <%= link_to tag.name,find_tag_path(tag) ,class: "btn btn-primary btn-sm",id:"tag-btn-s"%>
+                  <% if @post.tags.length > 1 %>
                     <%= link_to '×', tag_d_post_path(@post.id,tag_id: tag.id), method: :delete, data: { confirm: '本当に削除しますか?' },class: "btn btn-danger btn-sm",id:"tag-btn-d" %>
+                  <% end %>
               </div>
             <% end %>
         </div>

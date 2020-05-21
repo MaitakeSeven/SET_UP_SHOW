@@ -132,6 +132,9 @@ class PostsController < ApplicationController
       if@tag.save
         @new_tag = Tag.find_by(name: @tag.name)
         @post.post_tags.find_or_create_by(tag_id: @new_tag.id)
+        flash[:success] = 'タグの追加に成功しました。'
+      else
+        flash[:danger] = 'タグの追加に失敗しました。'
       end
     end
     redirect_to post_path
@@ -143,6 +146,7 @@ class PostsController < ApplicationController
       @p_t = PostTag.find_by(post_id: params[:id],tag_id: params[:tag_id])
       @p_t.destroy
       else
+
       end
       redirect_to post_path(params[:id])
       
