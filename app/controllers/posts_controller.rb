@@ -120,7 +120,6 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     @tag = Tag.new(tag_params)
     @check01 = Tag.where(name: @tag[:name])#配列
-
       if @check01.length == 1
         @post.post_tags.find_or_create_by(tag_id: @check01.first.id)
         redirect_to post_path
@@ -186,9 +185,7 @@ class PostsController < ApplicationController
     end
     
     def tag_params
-      unless params[:name] == ""
         params.require(:tag).permit(:name)
-      end
     end 
     
     def dtag_params
