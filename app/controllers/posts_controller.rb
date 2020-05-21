@@ -78,7 +78,6 @@ class PostsController < ApplicationController
             puts @name3#確認用
             format.html { render :new }
             flash[:danger] = '投稿に失敗しました。'
-            #format.json { render json: @post.errors, status: :unprocessable_entity }
         end
     end
   end
@@ -92,11 +91,9 @@ class PostsController < ApplicationController
         if @post.update(post_params)
           flash[:success] = '投稿を更新しました。'
           format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-          #format.json { render :show, status: :ok, location: @post }
         else
           flash[:danger] = '投稿に失敗しました。'
           format.html { render :edit }
-          #format.json { render json: @post.errors, status: :unprocessable_entity }
         end
       end
     else
