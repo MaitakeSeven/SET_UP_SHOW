@@ -120,22 +120,25 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     @tag = Tag.new(tag_params)
     @check01 = Tag.where(name: @tag[:name])#配列
+    unless @tag.name == nil || @tag.name == ""
       if @check01.length == 1
         @post.post_tags.find_or_create_by(tag_id: @check01.first.id)
         redirect_to post_path
       else
-        if@tag.save
-          @new_tag = Tag.find_by(name: @tag.name)
-          @post.post_tags.find_or_create_by(tag_id: @new_tag.id)
-          flash[:success] = 'タグの追加に成功しました。'
-          redirect_to post_path
-        else
-          flash[:danger] = 'タグの追加に失敗しました。'
-          redirect_to post_path
-        end
-
+          if@tag.save
+            @new_tag = Tag.find_by(name: @tag.name)
+            @post.post_tags.find_or_create_by(tag_id: @new_tag.id)
+            flash[:success] = 'タグの追加に成功しました。'
+            redirect_to post_path
+          else
+            flash[:danger] = 'タグの追加に失敗しました。'
+            redirect_to post_path
+          end
       end
-
+    else
+      flash[:danger] = 'タグの追加に失敗しました。'
+      redirect_to post_path
+    end
   end
 
   def tag_d
