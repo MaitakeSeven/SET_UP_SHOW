@@ -48,7 +48,7 @@ class PostsController < ApplicationController
         end
       end
     if @newarray.length == 0
-      flash[:danger] = '投稿に失敗しました。'
+      flash[:danger] = '投稿に失敗しました。タグを入力してください。'
       @name1 =  tag1_params
       @name2  = tag2_params
       @name3  = tag3_params

@@ -37,8 +37,8 @@
           <%= form_with(model: @tag, url: tags_post_path , method: :post) do |form| %>
             <div class="field">
                 <%= form.label :name,"タグ名" %>
-                <%= form.text_field :name %>
-                <%= form.submit "タグを追加する",class: "btn btn-primary btn-sm" %>
+                <%= form.text_field :name ,:placeholder => "10文字以内" %>
+                <%= form.submit  "タグを追加する",class: "btn btn-primary btn-sm" %>
             </div>
           <% end %>
         </div>
