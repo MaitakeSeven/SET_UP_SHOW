@@ -43,7 +43,7 @@ class PostsController < ApplicationController
     @newarray = []
     
     @namearray.each do |name|
-      unless name == nil
+      unless name == nil && name == ""
           @tag = Tag.new(name: name)
           @newarray.push(@tag)
       end
