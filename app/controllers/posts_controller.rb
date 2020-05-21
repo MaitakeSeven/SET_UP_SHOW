@@ -40,46 +40,48 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @namearray = [tag1_params,tag2_params,tag3_params]
-    
     @newarray = []
-    
-    @namearray.each do |name|
-      unless name == nil
-          @tag = Tag.new(name: name)
-          @newarray.push(@tag)
-      end
-    end
-    respond_to do |format|
-        if  @post.save
-            #format.json { render :show, status: :created, location: @post } 
-            flash[:success] = '投稿に成功しました。'
-            @newarray.each do |tag|
-              @check = Tag.find_by(name: tag.name)
-              @new_post = Post.find_by(title: @post.title)
-              unless @check
-                  if tag.save
-                    @new_tag = Tag.find_by(name: tag.name)
-                    @new_post.post_tags.find_or_create_by(tag_id: @new_tag.id)
-                  else
-                    
-                    redirect_to :new
-                  end
-              else
-                @new_post.post_tags.find_or_create_by(tag_id: @check.id)
-              end
-            end
-            format.html { redirect_to @post }
-        else
-            @name1 =  tag1_params
-            @name2  = tag2_params
-            @name3  = tag3_params
-            puts @name1#確認用
-            puts @name2#確認用
-            puts @name3#確認用
-            format.html { render :new }
-            flash[:danger] = '投稿に失敗しました。'
+      @namearray.each do |name|
+        unless name == nil
+            @tag = Tag.new(name: name)
+            @newarray.push(@tag)
         end
+      end
+    if @newarray.length == 0
+      flash[:danger] = '投稿に失敗しました。'
+      render :new
+      return
     end
+    
+    Post.transaction do
+      @post.save!
+        @newarray.each do |tag|
+          @check = Tag.find_by(name: tag.name)
+          @new_post = Post.find_by(title: @post.title)
+            unless @check
+              if tag.save!
+                @new_tag = Tag.find_by(name: tag.name)
+                @new_post.post_tags.find_or_create_by(tag_id: @new_tag.id)
+              end
+            else
+              @new_post.post_tags.find_or_create_by(tag_id: @check.id)
+            end
+        end
+      flash[:success] = '投稿に成功しました。'
+    end
+      
+      redirect_to @post
+      
+    rescue => e
+      flash[:danger] = '投稿に失敗しました。'
+      puts e.message
+      @name1 =  tag1_params
+      @name2  = tag2_params
+      @name3  = tag3_params
+      puts @name1#確認用
+      puts @name2#確認用
+      puts @name3#確認用
+      render :new
   end
 
 

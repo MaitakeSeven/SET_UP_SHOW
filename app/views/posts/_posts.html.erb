@@ -1,6 +1,6 @@
 <% @posts.order(id: :desc).each do |post| %>
       <div class="card" style="width: 22rem;" id="card">
-        <img class="card-img-top" alt="Card image cap"<%= image_tag(post.image&.url || '')%>
+        <img class="card-img-top" id="image" alt="Card image cap"<%= image_tag(post.image&.url || '')%>
             <div class="card-header">
               <h5 class="card-title" id="card-post">
                 <%= link_to post.title, post %>
@@ -10,14 +10,14 @@
                         <%= form_with(model: current_user.favorites.find_by(post_id: post.id), local: true, method: :delete) do |f| %>
                           <% #hidden_field_tag :post_id, post.id %>
                           <%= link_to(favorites_path(post_id: post.id), method: :delete) do %>
-                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star" id="fav-icon"></i>
                           <% end %>
                         <% end %>
                     <% else#お気に入り %>
                         <%= form_with(model: current_user.favorites.build, local: true) do |f| %>
                            <% #hidden_field_tag :post_id, post.id %>
                             <%= link_to(favorites_path(post_id: post.id), method: :post) do %>
-                            <i class="far fa-star"></i>
+                            <i class="far fa-star" id="fav-icon"></i>
                             <% end %>
                         <% end %>
                     <% end %>
