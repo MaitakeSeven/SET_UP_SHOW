@@ -8,6 +8,9 @@ private
       redirect_to login_url
     end
   end
-
+  
+  def count_tags(posts)
+    posts.tags.count
+  end 
 
 end

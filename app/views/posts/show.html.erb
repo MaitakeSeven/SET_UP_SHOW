@@ -32,7 +32,7 @@
               </div>
             <% end %>
         </div>
-        <% if logged_in? %>
+        <% if logged_in? && @post.tags.count < 5 %>
           <div class="border border-primary show_field">
             <h5>タグ追加</h5>
             <%= form_with(model: @tag, url: tags_post_path , method: :post) do |form| %>

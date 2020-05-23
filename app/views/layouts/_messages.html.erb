@@ -4,6 +4,17 @@
       <% model.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
+      <% unless @em == nil%>
+        <li><%= @em %></li>
+      <% end %>
     </ul>
   </div>
+<% else %>
+  <% unless @em == nil%>
+    <div class="alert alert-warning ">
+      <ul>
+          <li><%= @em %></li>
+      </ul>
+    </div>
+  <% end %>
 <% end %>

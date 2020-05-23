@@ -47,43 +47,40 @@ class PostsController < ApplicationController
             @newarray.push(@tag)
         end
       end
-    if @newarray.length == 0
-      flash[:danger] = '投稿に失敗しました。タグを入力してください。'
-      @name1 =  tag1_params
-      @name2  = tag2_params
-      @name3  = tag3_params
-      render :new
-      return
-    end
+
     
-    Post.transaction do
+    ActiveRecord::Base.transaction do
       @post.save!
-        @newarray.each do |tag|
-          @check = Tag.find_by(name: tag.name)
-          @new_post = Post.find_by(title: @post.title)
-            unless @check
-              if tag.save!
-                @new_tag = Tag.find_by(name: tag.name)
-                @new_post.post_tags.find_or_create_by(tag_id: @new_tag.id)
-              end
-            else
-              @new_post.post_tags.find_or_create_by(tag_id: @check.id)
-            end
-        end
+                @newarray.each do |tag|
+                    @check = Tag.find_by(name: tag.name)
+                    @new_post = Post.find_by(title: @post.title)
+                      unless @check
+                            if tag.save!
+                              @new_tag = Tag.find_by(name: tag.name)
+                              @new_post.post_tags.find_or_create_by(tag_id: @new_tag.id)
+                            end
+                      else
+                        @new_post.post_tags.find_or_create_by(tag_id: @check.id)
+                      end
+                end
+    if @newarray.length ==0
+      a = Tag.new(name: nil)
+      a.save!
+    end 
       flash[:success] = '投稿に成功しました。'
     end
       redirect_to @post
-
     rescue => e
-      flash[:danger] = '投稿に失敗しました。'
+      flash.now[:danger] = '投稿に失敗しました。'
       puts e.message
       @name1 =  tag1_params
       @name2  = tag2_params
       @name3  = tag3_params
-      puts @name1#確認用
-      puts @name2#確認用
-      puts @name3#確認用
+      if @name1 == nil && @name2 == nil && @name3 == nil
+        @em = "タグを1つ以上入力してください。"
+      end 
       render :new
+      #redirect_to new_post_path
   end
 
 
@@ -124,9 +121,15 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     @tag = Tag.new(tag_params)
     @check01 = Tag.where(name: @tag[:name])#配列
+        if count_tags(@post) > 4
+          flash[:danger] = 'タグの追加に失敗しました。'
+          render :show
+          return
+        end
     unless @tag.name == nil || @tag.name == ""
       if @check01.length == 1
         @post.post_tags.find_or_create_by(tag_id: @check01.first.id)
+        flash[:success] = 'タグの追加に成功しました。'
         redirect_to post_path
       else
           if@tag.save
@@ -136,12 +139,14 @@ class PostsController < ApplicationController
             redirect_to post_path
           else
             flash[:danger] = 'タグの追加に失敗しました。'
-            redirect_to post_path
+            render :show
+            return
           end
       end
     else
       flash[:danger] = 'タグの追加に失敗しました。'
-      redirect_to post_path
+      render :show
+      return
     end
   end
 
@@ -150,6 +155,7 @@ class PostsController < ApplicationController
       if @post.tags.count > 1
       @p_t = PostTag.find_by(post_id: params[:id],tag_id: params[:tag_id])
       @p_t.destroy
+      flash[:success] = 'タグの削除に成功しました。'
       else
 
       end

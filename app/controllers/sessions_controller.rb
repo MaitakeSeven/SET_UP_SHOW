@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
             redirect_to @user
         else
             flash[:danger] = "メールアドレス又はパスワードが違います。"
-            render :new
+            redirect_to login_path
         end
     end
 
