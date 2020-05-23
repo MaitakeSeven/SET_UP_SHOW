@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
-  PER = 8
+  PER = 9
   # GET /posts
   # GET /posts.json
   def index
